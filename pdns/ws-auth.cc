@@ -1612,24 +1612,24 @@ static void checkNewRecords(vector<DNSResourceRecord>& records, const DNSName& z
     if (previous.qname == rec.qname) {
       if (previous.qtype == rec.qtype) {
         if (onlyOneEntryTypes.count(rec.qtype.getCode()) != 0) {
-          throw ApiException("RRset " + rec.qname.toString() + " IN " + rec.qtype.toString() + " has more than one record");
+          throw ApiException("More than one " +  rec.qtype.toString() + " record for " + rec.qname.toString());
         }
         if (previous.content == rec.content) {
-          throw ApiException("Duplicate record in RRset " + rec.qname.toString() + " IN " + rec.qtype.toString() + " with content \"" + rec.content + "\"");
+          throw ApiException("Duplicate record: \"" + rec.qname.toString() + " IN " + rec.qtype.toString() + rec.content + "\"");
         }
       }
       else if (exclusiveEntryTypes.count(rec.qtype.getCode()) != 0 || exclusiveEntryTypes.count(previous.qtype.getCode()) != 0) {
-        throw ApiException("RRset " + rec.qname.toString() + " IN " + rec.qtype.toString() + ": Conflicts with another RRset");
+        throw ApiException(rec.qname.toString() + " conflicts with CNAME record");
       }
     }
 
     if (rec.qname == zone) {
       if (nonApexTypes.count(rec.qtype.getCode()) != 0) {
-        throw ApiException("Record " + rec.qname.toString() + " IN " + rec.qtype.toString() + " is not allowed at apex");
+        throw ApiException(rec.qtype.toString() + " records are not allowed at the apex");
       }
     }
     else if (atApexTypes.count(rec.qtype.getCode()) != 0) {
-      throw ApiException("Record " + rec.qname.toString() + " IN " + rec.qtype.toString() + " is only allowed at apex");
+      throw ApiException(rec.qtype.toString() + " records are only allowed at the apex");
     }
 
     // Check if the DNSNames that should be hostnames, are hostnames
