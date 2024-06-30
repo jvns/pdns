@@ -1151,7 +1151,7 @@ $ORIGIN %NAME%
             data=json.dumps(payload),
             headers={'content-type': 'application/json'})
         self.assertEqual(r.status_code, 422)
-        self.assertIn('Conflicts with another RRset', r.json()['error'])
+        self.assertIn('Conflicts with CNAME record', r.json()['error'])
 
     def test_export_zone_json(self):
         name, payload, zone = self.create_zone(nameservers=['ns1.foo.com.', 'ns2.foo.com.'], soa_edit_api='')

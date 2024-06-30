@@ -1619,7 +1619,7 @@ static void checkNewRecords(vector<DNSResourceRecord>& records, const DNSName& z
         }
       }
       else if (exclusiveEntryTypes.count(rec.qtype.getCode()) != 0 || exclusiveEntryTypes.count(previous.qtype.getCode()) != 0) {
-        throw ApiException("RRset " + rec.qname.toString() + " IN " + rec.qtype.toString() + ": Conflicts with another RRset");
+        throw ApiException("RRset " + rec.qname.toString() + " IN " + rec.qtype.toString() + ": Conflicts with " + previous.qtype.toString() + " record")
       }
     }
 
